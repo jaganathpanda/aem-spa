@@ -1,0 +1,21 @@
+.carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+  }
+  .carousel-slide {
+    flex: 0 0 auto;
+    width: 300px;
+    scroll-snap-align: start;
+    margin-right: 16px;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .caption {
+    text-align: center;
+    margin-top: 8px;
+  }
+  
