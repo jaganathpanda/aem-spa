@@ -9,6 +9,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import com.adobe.aem.guides.wknd.spa.react.core.models.SliderValue;
 import com.adobe.aem.guides.wknd.spa.react.core.models.SpaCarousel;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,21 +29,13 @@ public class SpaCarouselImpl implements SpaCarousel {
     public static final String RESOURCE_TYPE = "wknd-spa-react/components/spaCarousel";
 
     @Inject
-    @JsonProperty("items")
-    private List<Resource> items;
-
-    @ValueMapValue
-    private String carouselTitle;
-    
+    @Via("resource")
+    @JsonProperty("slides")
+    private List<Resource> slides; 
 
     @Override
-    public List<Resource> getItems() {
-        return items;
-    }
-
-    @Override
-    public String getCarouselTitle(){
-        return StringUtils.isNotBlank(carouselTitle) ? carouselTitle : "(Default Title)";
+    public List<Resource> getSlides() {
+        return slides;
     }
 
     @Override
