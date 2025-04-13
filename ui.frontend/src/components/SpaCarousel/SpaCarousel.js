@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MapTo } from '@adobe/cq-react-editable-components';
-import './SpaCarousel.css';
+import {MapTo} from '@adobe/aem-react-editable-components';
+import './spaCarousel.css';
 
 // Define the edit config for AEM editor support
 export const SpaCarouselEditConfig = {
