@@ -6,6 +6,7 @@ import org.apache.sling.api.resource.Resource;
 
 import com.adobe.cq.export.json.ComponentExporter;
 
-public interface SpaCarousel extends ComponentExporter {
-    List<Resource> getSlides();
+public interface SpaCarouselInterface extends ComponentExporter {
+    List<SliderValue> getSlides();
+    String  getText();
 }

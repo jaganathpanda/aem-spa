@@ -54,6 +54,7 @@ public class OpenWeatherModelImpl implements OpenWeatherModel {
     public double getLon() {
         return lon;
     }
+    
 
     // method required by `ComponentExporter` interface
     // exposes a JSON property named `:type` with a value of `wknd-spa-react/components/open-weather`

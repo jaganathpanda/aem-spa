@@ -8,7 +8,7 @@ export const SpaCarouselEditConfig = {
   emptyLabel: 'Spa Carousel',
 
   isEmpty: function (props) {
-    return !props || !props.items || props.items.length === 0;
+    return !props || !props.text || props.text.length === 0;
   },
 };
 
