@@ -25,7 +25,7 @@
                                     sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
                                     fieldLabel="Image"
                                     name="./image"
-                                    rootPath="/content/dam/we-retail"/>
+                                    rootPath="/content/dam"/>
                                 <caption
                                     jcr:primaryType="nt:unstructured"
                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
