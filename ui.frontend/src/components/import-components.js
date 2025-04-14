@@ -23,3 +23,4 @@ import './Custom/Custom';
 import './Card/Card';
 import './SpaCarousel/SpaCarousel';
 import './OpenWeather/OpenWeather';
+import './CardColumn/CardColumn';

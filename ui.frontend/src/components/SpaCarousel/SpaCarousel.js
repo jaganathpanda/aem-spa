@@ -51,7 +51,6 @@ const SpaCarousel = (props) => {
             alt={slides[currentIndex].caption}
           />
           <h3>{slides[currentIndex].caption}</h3>
-          <p>{slides[currentIndex].caption}</p>
         </div>
       </div>
     </div>
