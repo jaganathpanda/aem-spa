@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="sling:OsgiConfig"
-    scripts="[create service user wknd-spa-react-user&#xa;set ACL for wknd-spa-react-user&#xa;    allow jcr:read on /content&#xa;    allow jcr:read on /conf&#xa;end&#xa;]"/>
+    scripts="[create service user wknd-spa-react-user&#xa;
+set ACL for wknd-spa-react-user&#xa;
+    allow jcr:read, jcr:write on /content&#xa;
+    allow jcr:read on /conf&#xa;
+end&#xa;]"/>
