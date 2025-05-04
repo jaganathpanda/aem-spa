@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:designPath="/libs/settings/wcm/designs/default"
+        cq:lastModified="{Date}2025-05-03T12:56:27.012+05:30"
+        cq:lastModifiedBy="admin"
+        cq:template="/libs/cq/workflow/templates/model"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="WKND"
+        sling:resourceType="cq/workflow/components/pages/model"
+        transient="true">
+        <flow
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="foundation/components/parsys">
+            <participant
+                jcr:created="{Date}2025-05-02T23:12:29.566+05:30"
+                jcr:createdBy="admin"
+                jcr:lastModified="{Date}2025-05-02T23:16:13.456+05:30"
+                jcr:lastModifiedBy="admin"
+                jcr:primaryType="nt:unstructured"
+                jcr:title="CONTENT AUTHOR"
+                sling:resourceType="cq/workflow/components/model/participant">
+                <metaData
+                    jcr:primaryType="nt:unstructured"
+                    PARTICIPANT="content-authors"/>
+            </participant>
+            <participant_394408019
+                jcr:created="{Date}2025-05-02T23:13:48.630+05:30"
+                jcr:createdBy="admin"
+                jcr:lastModified="{Date}2025-05-02T23:16:02.242+05:30"
+                jcr:lastModifiedBy="admin"
+                jcr:primaryType="nt:unstructured"
+                jcr:title="CONTENT REVIEWERS"
+                sling:resourceType="cq/workflow/components/model/participant">
+                <metaData
+                    jcr:primaryType="nt:unstructured"
+                    PARTICIPANT="content-reviewers"/>
+            </participant_394408019>
+            <process
+                jcr:created="{Date}2025-05-03T00:10:45.423+05:30"
+                jcr:createdBy="admin"
+                jcr:lastModified="{Date}2025-05-03T12:41:09.832+05:30"
+                jcr:lastModifiedBy="admin"
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Meta Data Approval"
+                sling:resourceType="cq/workflow/components/model/process">
+                <metaData
+                    jcr:primaryType="nt:unstructured"
+                    PROCESS="com.adobe.aem.guides.wknd.spa.react.core.workflow.ApprovalMetadataProcess"
+                    PROCESS_ARGS="abc:def"/>
+            </process>
+        </flow>
+    </jcr:content>
+</jcr:root>
