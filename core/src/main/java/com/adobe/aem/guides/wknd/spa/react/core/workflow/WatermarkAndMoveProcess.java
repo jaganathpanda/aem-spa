@@ -8,6 +8,7 @@ import com.adobe.granite.workflow.metadata.MetaDataMap;
 import com.day.cq.dam.api.AssetManager;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Component;
 
 import javax.jcr.Node;
@@ -16,13 +17,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
-@Component(
-    service = WorkflowProcess.class,
-    property = {"process.label=Watermark and Move Image"}
-)
+@Component(service = WorkflowProcess.class, property = {
+    "process.label=Watermark and Move Image"
+})
 public class WatermarkAndMoveProcess implements WorkflowProcess {
 
     @Override
@@ -30,32 +29,60 @@ public class WatermarkAndMoveProcess implements WorkflowProcess {
         try {
             String payloadPath = item.getWorkflowData().getPayload().toString();
             ResourceResolver resolver = session.adaptTo(ResourceResolver.class);
-            Asset asset = resolver.getResource(payloadPath).adaptTo(Asset.class);
+            Resource resource = resolver.getResource(payloadPath);
+            if (resource == null) {
+                throw new Exception("Payload resource not found: " + payloadPath);
+            }
 
-            String brand = asset.getMimeType(); // Ensure brand is set
+            Asset asset = resource.adaptTo(Asset.class);
+            if (asset == null) {
+                throw new Exception("Asset adaptation failed for: " + payloadPath);
+            }
+
             InputStream is = asset.getOriginal().getStream();
             BufferedImage image = ImageIO.read(is);
 
-            // Load watermark based on brand
-            BufferedImage watermark = ImageIO.read(resolver.getResource("/content/dam/brand-watermarks/" + brand + ".png").adaptTo(InputStream.class));
-
-            // Apply watermark
-            Graphics2D g2d = image.createGraphics();
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            g2d.drawImage(watermark, 10, 10, null);
-            g2d.dispose();
-
-            // Save watermarked image to target location
-            String newPath = "/content/dam/images/approved/" + brand + "/" + asset.getName();
+            // Get metadata values
+            MetaDataMap metaDataMap = item.getWorkflowData().getMetaDataMap();
+            String approvalStatus = metaDataMap.get("approvalStatus", String.class);
+            //String watermarkText = args.get("watermarkText", String.class);
+            String targetPath = args.get("targetPath", String.class);
+            String watermarkText = item.getNode().getMetaDataMap().get("watermarkText", String.class);
+            String ext = FilenameUtils.getExtension(asset.getName());
             AssetManager assetManager = resolver.adaptTo(AssetManager.class);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, FilenameUtils.getExtension(asset.getName()), baos);
-            InputStream watermarkedStream = new ByteArrayInputStream(baos.toByteArray());
-            assetManager.createAsset(newPath, watermarkedStream, asset.getMimeType(), true);
+            String newPath;
 
-            // Delete original from review folder
-            resolver.getResource(payloadPath).adaptTo(Node.class).remove();
+            if ("approved".equalsIgnoreCase(approvalStatus)) {
+                // Apply watermark
+                Graphics2D g2d = image.createGraphics();
+                g2d.setFont(new Font("Arial", Font.BOLD, 40));
+                g2d.setColor(new Color(255, 0, 0, 128)); // semi-transparent red
+                g2d.drawString(watermarkText, 20, image.getHeight() - 40);
+                g2d.dispose();
+
+                ImageIO.write(image, ext, baos);
+                InputStream watermarkedStream = new ByteArrayInputStream(baos.toByteArray());
+
+                newPath = targetPath + "/" + asset.getName();
+                assetManager.createAsset(newPath, watermarkedStream, asset.getMimeType(), true);
+
+                System.out.println("✅ Approved: Asset moved with watermark to " + newPath);
+            } else {
+                // Move to rejected folder without watermark
+                newPath = "/content/dam/wknd-spa-react/rejected/" + asset.getName();
+                ImageIO.write(image, ext, baos);
+                InputStream originalStream = new ByteArrayInputStream(baos.toByteArray());
+
+                assetManager.createAsset(newPath, originalStream, asset.getMimeType(), true);
+
+                System.out.println("❌ Rejected: Asset moved to rejected folder at " + newPath);
+            }
+
+            // Delete original from source
+            resource.adaptTo(Node.class).remove();
             resolver.commit();
+            session.terminateWorkflow(item.getWorkflow());
 
         } catch (Exception e) {
             e.printStackTrace();
