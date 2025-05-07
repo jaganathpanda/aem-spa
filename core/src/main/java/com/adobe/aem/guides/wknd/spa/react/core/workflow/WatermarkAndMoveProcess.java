@@ -17,10 +17,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
 
 @Component(service = WorkflowProcess.class, property = {
-    "process.label=Watermark and Move Image"
+        "process.label=Watermark and Move Image"
 })
 public class WatermarkAndMoveProcess implements WorkflowProcess {
 
@@ -29,6 +31,7 @@ public class WatermarkAndMoveProcess implements WorkflowProcess {
         try {
             String payloadPath = item.getWorkflowData().getPayload().toString();
             ResourceResolver resolver = session.adaptTo(ResourceResolver.class);
+            mapTest(args);
             Resource resource = resolver.getResource(payloadPath);
             if (resource == null) {
                 throw new Exception("Payload resource not found: " + payloadPath);
@@ -44,9 +47,11 @@ public class WatermarkAndMoveProcess implements WorkflowProcess {
 
             // Get metadata values
             MetaDataMap metaDataMap = item.getWorkflowData().getMetaDataMap();
+            mapTest(metaDataMap);
             String approvalStatus = metaDataMap.get("approvalStatus", String.class);
-            //String watermarkText = args.get("watermarkText", String.class);
+            // String watermarkText = args.get("watermarkText", String.class);
             String targetPath = args.get("targetPath", String.class);
+            mapTest(item.getNode().getMetaDataMap());
             String watermarkText = item.getNode().getMetaDataMap().get("watermarkText", String.class);
             String ext = FilenameUtils.getExtension(asset.getName());
             AssetManager assetManager = resolver.adaptTo(AssetManager.class);
@@ -86,6 +91,14 @@ public class WatermarkAndMoveProcess implements WorkflowProcess {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void mapTest(MetaDataMap metaDataMap) {
+        for (Map.Entry<String, Object> entry : metaDataMap.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println("Key: " + key + ", Value: " + value);
         }
     }
 }

@@ -188,6 +188,18 @@ Import-Package: javax.annotation;version=0.0.0,*
             <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.event</artifactId>
+            <version>3.1.5-R1485539</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.offloading.core</artifactId>
+            <version>1.0.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <!-- Additional Profiles for Cloud Service vs. 6.x -->
