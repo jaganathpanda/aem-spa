@@ -45,7 +45,7 @@ public class SampleServlet extends SlingAllMethodsServlet {
 
             HttpResponse httpResponse = httpClient.execute(post);
             InputStream responseStream = httpResponse.getEntity().getContent();
-            String result = IOUtils.toString(responseStream, StandardCharsets.UTF_8);
+            String result = IOUtils.toString(responseStream, "UTF-8"); 
 
             response.getWriter().write(result);
 

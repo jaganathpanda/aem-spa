@@ -34,7 +34,7 @@ public class AssetUploadListener implements EventHandler {
             Map<String, Object> props = new HashMap<>();
             props.put(OffloadingJobProperties.INPUT_PAYLOAD.propertyName(), assetPath);
             // Enqueue a job on topic "com/mycompany/aem/asset/upload"
-            Job job = jobManager.addJob("com/wknd/aem/asset/upload", null, props);
+            Job job = jobManager.addJob("com/wknd/aem/asset/upload", props);
             log.info("Posted job [{}] for uploaded asset: {}", job != null ? job.getId() : null, assetPath);
         }
     }
